@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Open in Daily CARS Coach</title>
+<link rel="stylesheet" href="style.css">
+<script>
+  var APP_STORE = "https://apps.apple.com/app/id6773084766";
+  function params() {
+    var out = {};
+    location.search.replace(/^\?/, "").split("&").forEach(function (kv) {
+      if (!kv) return;
+      var p = kv.split("=");
+      out[decodeURIComponent(p[0])] = decodeURIComponent(p[1] || "");
+    });
+    return out;
+  }
+  function deepLink() {
+    var id = params().id || "";
+    return "carsdaily://reading?id=" + encodeURIComponent(id);
+  }
+  function openApp() {
+    var link = deepLink();
+    var t = Date.now();
+    // If the app opens, the page is backgrounded and the timer below won't fire
+    // soon after; otherwise fall back to the App Store.
+    setTimeout(function () {
+      if (Date.now() - t < 1600) window.location = APP_STORE;
+    }, 1200);
+    window.location = link;
+  }
+  window.addEventListener("load", function () {
+    document.getElementById("open").setAttribute("href", deepLink());
+    // Attempt automatically on mobile.
+    if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) openApp();
+  });
+</script>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="brand">Daily <span class="plain">CARS</span> Coach</div>
+  </header>
+  <h1>A friend challenged you</h1>
+  <div class="sub">Try the same passage and compare scores</div>
+
+  <div class="card">
+    <p>Tap below to open this passage in Daily CARS Coach. Don't have the app yet?
+    Grab it from the App Store and your challenge will be waiting.</p>
+    <p style="margin-top:18px">
+      <a id="open" href="#" onclick="openApp();return false;"
+         style="display:inline-block;background:var(--gold);color:#2a0e1e;font-weight:800;
+                padding:14px 22px;border-radius:999px;text-decoration:none">Open the passage</a>
+    </p>
+    <p class="muted" style="margin-top:16px"><a href="https://apps.apple.com/app/id6773084766">Get Daily CARS Coach on the App Store</a></p>
+  </div>
+
+  <div class="nav">
+    <a href="index.html">Home</a>
+    <a href="support.html">Support</a>
+    <a href="privacy.html">Privacy Policy</a>
+  </div>
+  <footer>&copy; 2026 Daily CARS Coach.</footer>
+</div>
+</body>
+</html>
